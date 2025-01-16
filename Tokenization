@@ -1,0 +1,13 @@
+import nltk
+nltk.download('punkt')  # Download the necessary datasets for tokenization
+
+# Sample text
+text = "Hello there! How are you doing today?"
+
+# Word Tokenization
+word_tokens = nltk.word_tokenize(text)
+print("Word Tokens:", word_tokens)
+
+# Sentence Tokenization
+sentence_tokens = nltk.sent_tokenize(text)
+print("Sentence Tokens:", sentence_tokens)
