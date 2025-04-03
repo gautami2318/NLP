@@ -1,0 +1,51 @@
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import accuracy_score
+
+# Sample data (documents and their corresponding categories)
+documents = [
+    "I love programming in Python.",
+    "Python is great for data science.",
+    "I enjoy reading about machine learning.",
+    "Machine learning is a fascinating field.",
+    "Cooking is an art, and I love it.",
+    "I like to bake cookies and cakes.",
+    "Football is a popular sport.",
+    "I enjoy playing football with friends."
+]
+
+# Labels for classification (e.g., 'Technology', 'Cooking', 'Sports')
+labels = ['Technology', 'Technology', 'Technology', 'Technology', 'Cooking', 'Cooking', 'Sports', 'Sports']
+
+# Step 1: TF-IDF Vectorization
+# Convert the text documents into numerical features (TF-IDF representation)
+vectorizer = TfidfVectorizer(stop_words='english')
+X = vectorizer.fit_transform(documents)  # The feature matrix (TF-IDF representation)
+y = np.array(labels)  # The target labels (categories)
+
+# Step 2: Train-test split
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+# Step 3: Train a classifier (Naive Bayes)
+classifier = MultinomialNB()
+classifier.fit(X_train, y_train)
+
+# Step 4: Predict and evaluate the classifier
+y_pred = classifier.predict(X_test)
+
+# Step 5: Output results
+print("Predicted labels:", y_pred)
+print("True labels:", y_test)
+
+# Evaluate accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy * 100:.2f}%")
+
+# Step 6: Predict the category of a new document
+new_document = ["I am learning about deep learning and AI."]
+new_document_tfidf = vectorizer.transform(new_document)  # Convert to TF-IDF representation
+new_pred = classifier.predict(new_document_tfidf)  # Predict the category
+print(f"Predicted category for new document: {new_pred[0]}")
