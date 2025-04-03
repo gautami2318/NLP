@@ -1,0 +1,24 @@
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk import pos_tag
+
+# Step 1: Download necessary NLTK resources
+nltk.download('punkt')  # For tokenizing text into words
+nltk.download('averaged_perceptron_tagger')  # For POS tagging
+
+# Step 2: Define a function to tokenize and tag POS
+def pos_tagging_example(text):
+    # Tokenize the text into words
+    words = word_tokenize(text)
+    
+    # Perform POS tagging
+    tagged_words = pos_tag(words)
+    
+    return tagged_words
+
+# Example usage
+sentence = "Natural language processing is a fascinating field of AI."
+tagged_sentence = pos_tagging_example(sentence)
+
+# Display the result
+print(tagged_sentence)
