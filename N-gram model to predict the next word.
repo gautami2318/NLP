@@ -1,0 +1,57 @@
+import random
+import re
+from collections import defaultdict
+
+# Step 1: Preprocess text
+def preprocess(text):
+    # Convert to lowercase and remove non-alphabetic characters (keeping spaces and words)
+    text = text.lower()
+    text = re.sub(r'[^a-z\s]', '', text)
+    return text.split()
+
+# Step 2: Create N-grams
+def generate_ngrams(text, n):
+    ngrams = []
+    for i in range(len(text) - n + 1):
+        ngrams.append(tuple(text[i:i + n]))
+    return ngrams
+
+# Step 3: Build the N-gram model
+def build_ngram_model(text, n):
+    model = defaultdict(list)
+    ngrams = generate_ngrams(text, n)
+    for ngram in ngrams:
+        prefix = ngram[:-1]  # The first N-1 words are the context
+        suffix = ngram[-1]   # The last word is the predicted word
+        model[prefix].append(suffix)
+    return model
+
+# Step 4: Predict the next word
+def predict_next_word(model, context):
+    context = tuple(context[-(len(context)):])  # Ensure the context has length N-1
+    if context in model:
+        return random.choice(model[context])
+    else:
+        return None  # If no prediction is found
+
+# Example Usage:
+text = """
+N-grams are contiguous sequences of N items from a given sample of text or speech. 
+For example, the sequence "I am learning N-grams" has the following 2-grams: ("I", "am"), ("am", "learning"), ("learning", "N-grams").
+"""
+
+# Preprocess the text
+words = preprocess(text)
+
+# Build the model using a bigram (2-gram)
+n = 2
+ngram_model = build_ngram_model(words, n)
+
+# Context (previous word or N-1 words)
+context = ["i", "am"]
+
+# Predict the next word
+next_word = predict_next_word(ngram_model, context)
+
+print(f"Context: {' '.join(context)}")
+print(f"Predicted next word: {next_word}")
